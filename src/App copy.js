@@ -1,4 +1,13 @@
 import { useEffect, useState } from "react";
+// import icons from "../src/images/10d.svg";
+// import { ReactSVG } from "react-svg";
+// const words = ["spray", "elite", "exuberant", "destruction", "present"];
+
+// const result = words.filter((word) => word.length > 6);
+
+// console.log(words);
+// console.log(result);
+// console.log(words);
 
 const weeks = [
   "Sunday",
@@ -34,6 +43,15 @@ function App() {
           if (!res.ok)
             throw new Error(` Data Fetching went wrong ${res.message} `);
           const data = await res.json();
+          // console.log(new Date());
+          console.log(data);
+          console.log(data.list);
+
+          // console.log(data.list.at(0).dt_txt);
+          // console.log(data.city.name);
+          // console.log(Math.floor(data.list.at(0).main.temp - 273));
+          // console.log(data.list.at(0).weather.at(0).description);
+          // console.log(data.list.at(0).weather.at(0).icon);
 
           const dataFilter = data.list.filter(
             (data) =>
@@ -41,6 +59,9 @@ function App() {
               data.dt_txt.includes("12:00:00") &&
               new Date().getDate() !== new Date(data.dt_txt).getDate()
           );
+          console.log(dataFilter);
+          // const dataWeatherFilter = [...dataFilter].slice(0, 4);
+          // console.log("final", dataWeatherFilter);
 
           setDataWeather((dataWeather) => ({
             ...dataWeather,
@@ -51,6 +72,37 @@ function App() {
             dataWeatherFilter: [...dataFilter].slice(0, 4),
           }));
           setIcon((icon) => data.list.at(0).weather.at(0).icon);
+
+          // const dataFilter = data.list.filter(
+          //   (data) =>
+          //     data.sys.pod === "d" &&
+          //     data.dt_txt.includes("12:00:00") &&
+          //     new Date().getDate() !== new Date(data.dt_txt).getDate()
+          // );
+          // console.log(dataFilter);
+          // const dataWeatherFilter = [...dataFilter];
+          // console.log("final", dataWeatherFilter.slice(0, 4));
+
+          // console.log(
+          //   "hiiiiiii",
+          //   Math.floor(dataFilter.at(0).main.temp - 273.15)
+          // );
+          // console.log(
+          //   "hiiiiiii",
+          //   Math.floor(dataFilter.at(1).main.temp - 273.15)
+          // );
+          // console.log(
+          //   "hiiiiiii",
+          //   Math.floor(dataFilter.at(2).main.temp - 273.15)
+          // );
+          // console.log("DateNow", new Date().getDate());
+          // console.log(
+          //   "DateNoooooooowwwww",
+          //   new Date(data.list.at(0).dt_txt).getDate()
+          // );
+          // setTimeout(function () {
+          //   setCity("");
+          // }, 5000);
         } catch (err) {
           if (err.name !== "AbortError") {
             console.error(err);
