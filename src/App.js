@@ -100,7 +100,7 @@ function WeatherInfo({ dataWeather }) {
 
   return (
     <div>
-      <p>{dataWeather.date}</p>
+      <p>Today</p>
       <p className="city">{dataWeather.city}</p>
       <p>Temperature: {dataWeather.temp}°C</p>
       <p>{dataWeather.weatherDesc}</p>
