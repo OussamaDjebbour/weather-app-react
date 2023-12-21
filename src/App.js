@@ -25,41 +25,44 @@ function App() {
 
       const controller = new AbortController();
 
-      async function fetchWeather() {
-        try {
-          const res = await fetch(
-            `https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=6557810176c36fac5f0db536711a6c52`,
-            { signal: controller.signal }
-          );
-          if (!res.ok)
-            throw new Error(` Data Fetching went wrong ${res.message} `);
-          const data = await res.json();
+      function fetchWeather() {
+        setTimeout(async () => {
+          try {
+            const res = await fetch(
+              `https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=6557810176c36fac5f0db536711a6c52`,
+              { signal: controller.signal }
+            );
+            if (!res.ok)
+              throw new Error(` Data Fetching went wrong ${res.message} `);
+            const data = await res.json();
 
-          const dataFilter = data.list.filter(
-            (data) =>
-              data.sys.pod === "d" &&
-              data.dt_txt.includes("12:00:00") &&
-              new Date().getDate() !== new Date(data.dt_txt).getDate()
-          );
+            const dataFilter = data.list.filter(
+              (data) =>
+                data.sys.pod === "d" &&
+                data.dt_txt.includes("12:00:00") &&
+                new Date().getDate() !== new Date(data.dt_txt).getDate()
+            );
 
-          setDataWeather((dataWeather) => ({
-            ...dataWeather,
-            date: data.list.at(0).dt_txt,
-            city: data.city.name,
-            temp: Math.floor(data.list.at(0).main.temp - 273.15),
-            weatherDesc: data.list.at(0).weather.at(0).description,
-            dataWeatherFilter: [...dataFilter].slice(0, 4),
-          }));
-          setIcon((icon) => data.list.at(0).weather.at(0).icon);
-        } catch (err) {
-          if (err.name !== "AbortError") {
-            console.error(err);
+            setDataWeather((dataWeather) => ({
+              ...dataWeather,
+              date: data.list.at(0).dt_txt,
+              city: data.city.name,
+              temp: Math.floor(data.list.at(0).main.temp - 273.15),
+              weatherDesc: data.list.at(0).weather.at(0).description,
+              dataWeatherFilter: [...dataFilter].slice(0, 4),
+            }));
+            setIcon((icon) => data.list.at(0).weather.at(0).icon);
+          } catch (err) {
+            if (err.name !== "AbortError") {
+              console.error(err);
+            }
           }
-        }
+        }, 2000);
       }
       fetchWeather();
 
       return function () {
+        clearTimeout(fetchWeather);
         controller.abort();
       };
     },
