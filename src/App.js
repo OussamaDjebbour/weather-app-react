@@ -36,27 +36,11 @@ function App() {
               throw new Error(` Data Fetching went wrong ${res.message} `);
             const data = await res.json();
 
-            console.log("data", data);
-
-            // const dataFilter = data.list.filter(
-            //   (data) =>
-            //     data.sys.pod === "d" &&
-            //     data.dt_txt.includes("12:00:00") &&
-            //     new Date().getDate() !== new Date(data.dt_txt).getDate()
-            // );
-
             const timeDateObject1 = data.list.at(0).dt_txt.split(" ")[1];
 
-            const dataFilter = data.list.filter(
-              (data) =>
-                // data.sys.pod === "d" &&
-                data.dt_txt.includes(timeDateObject1)
-              //  &&
-              // new Date().getDate() !== new Date(data.dt_txt).getDate()
+            const dataFilter = data.list.filter((data) =>
+              data.dt_txt.includes(timeDateObject1)
             );
-            console.log("date array 1", data.list.at(0).dt_txt);
-            console.log("timeDateObject1", timeDateObject1);
-            console.log("dataFilter", dataFilter);
 
             setDataWeather((dataWeather) => ({
               ...dataWeather,
