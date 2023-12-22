@@ -11,7 +11,7 @@ const weeks = [
 ];
 
 function App() {
-  const [city, setCity] = useState("oran");
+  const [city, setCity] = useState("");
   const [dataWeather, setDataWeather] = useState({});
   const [icon, setIcon] = useState("02d");
 
