@@ -11,7 +11,7 @@ const weeks = [
 ];
 
 function App() {
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState("oran");
   const [dataWeather, setDataWeather] = useState({});
   const [icon, setIcon] = useState("02d");
 
@@ -36,12 +36,27 @@ function App() {
               throw new Error(` Data Fetching went wrong ${res.message} `);
             const data = await res.json();
 
+            console.log("data", data);
+
+            // const dataFilter = data.list.filter(
+            //   (data) =>
+            //     data.sys.pod === "d" &&
+            //     data.dt_txt.includes("12:00:00") &&
+            //     new Date().getDate() !== new Date(data.dt_txt).getDate()
+            // );
+
+            const timeDateObject1 = data.list.at(0).dt_txt.split(" ")[1];
+
             const dataFilter = data.list.filter(
               (data) =>
-                data.sys.pod === "d" &&
-                data.dt_txt.includes("12:00:00") &&
-                new Date().getDate() !== new Date(data.dt_txt).getDate()
+                // data.sys.pod === "d" &&
+                data.dt_txt.includes(timeDateObject1)
+              //  &&
+              // new Date().getDate() !== new Date(data.dt_txt).getDate()
             );
+            console.log("date array 1", data.list.at(0).dt_txt);
+            console.log("timeDateObject1", timeDateObject1);
+            console.log("dataFilter", dataFilter);
 
             setDataWeather((dataWeather) => ({
               ...dataWeather,
@@ -49,7 +64,7 @@ function App() {
               city: data.city.name,
               temp: Math.floor(data.list.at(0).main.temp - 273.15),
               weatherDesc: data.list.at(0).weather.at(0).description,
-              dataWeatherFilter: [...dataFilter].slice(0, 4),
+              dataWeatherFilter: [...dataFilter].slice(1, 5),
             }));
             setIcon((icon) => data.list.at(0).weather.at(0).icon);
           } catch (err) {
